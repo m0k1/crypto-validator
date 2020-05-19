@@ -1,6 +1,6 @@
 {
-  "name": "trezor-address-validator",
-  "description": "Multicoin address validator for Bitcoin and other altcoins.",
+  "name": "@getdelta/wallet-address-validator",
+  "description": "Wallet address validator for Bitcoin and other Altcoins.",
   "keywords": [
     "ada",
     "btc",
@@ -36,12 +36,12 @@
     "nodejs"
   ],
   "version": "0.3.22",
-  "author": "Martin <martin.bohm@satoshilabs.com>",
-  "homepage": "https://github.com/trezor/trezor-address-validator",
+  "author": "Tomek Kolasa <tomek@kolasa.me>",
+  "homepage": "https://github.com/getdelta/wallet-address-validator",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/trezor/trezor-address-validator.git"
+    "url": "https://github.com/getdelta/wallet-address-validator.git"
   },
   "main": "src/wallet_address_validator",
   "engines": {
