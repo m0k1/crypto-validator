@@ -188,7 +188,8 @@ function toByteArray (b64) {
     ? validLen - 4
     : validLen
 
-  for (var i = 0; i < len; i += 4) {
+  var i
+  for (i = 0; i < len; i += 4) {
     tmp =
       (revLookup[b64.charCodeAt(i)] << 18) |
       (revLookup[b64.charCodeAt(i + 1)] << 12) |
@@ -2392,6 +2393,7 @@ module.exports = BigNumber;
 
 }).call(this,require("buffer").Buffer)
 },{"buffer":4}],4:[function(require,module,exports){
+(function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4170,7 +4172,8 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":2,"ieee754":35}],5:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"base64-js":2,"buffer":4,"ieee754":35}],5:[function(require,module,exports){
 /*
  * The MIT License (MIT)
  *
@@ -13701,12 +13704,8 @@ var base32 = require('./base32');
 var BigNum = require('browserify-bignum');
 var groestl = require('groestl-hash-js');
 
-function numberToHex(number) {
-    var hex = Math.round(number).toString(16)
-    if (hex.length === 1) {
-        hex = '0' + hex
-    }
-    return hex
+function numberToHex(number, sizeInBytes) {
+    return Math.round(number).toString(16).padStart(sizeInBytes * 2, '0');
 }
 
 function isHexChar(c) {
@@ -13774,10 +13773,11 @@ function hexStr2byteArray(str) {
 }
 
 module.exports = {
+    numberToHex,
     toHex: function (arrayOfBytes) {
         var hex = '';
         for (var i = 0; i < arrayOfBytes.length; i++) {
-            hex += numberToHex(arrayOfBytes[i]);
+            hex += numberToHex(arrayOfBytes[i], 1);
         }
         return hex;
     },
@@ -15387,52 +15387,45 @@ module.exports = {
 
 
 },{}],160:[function(require,module,exports){
-var baseX = require('base-x');
-var crc = require('crc');
-var cryptoUtils = require('./crypto/utils');
+const baseX = require('base-x');
+const crc = require('crc');
+const cryptoUtils = require('./crypto/utils');
 
- var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
- var base32 = baseX(ALPHABET);
-var regexp = new RegExp('^[' + ALPHABET + ']{56}$');
-var ed25519PublicKeyVersionByte = (6 << 3);
+const base32 = baseX(ALPHABET);
+const regexp = new RegExp('^[' + ALPHABET + ']{56}$');
+const ed25519PublicKeyVersionByte = (6 << 3);
 
- function swap16(number) {
-    var lower = number & 0xFF;
-    var upper = (number >> 8) & 0xFF;
+function swap16(number) {
+    const lower = number & 0xFF;
+    const upper = (number >> 8) & 0xFF;
     return (lower << 8) | upper;
 }
 
- function numberToHex(number) {
-    var hex = number.toString(16);
-    if(hex.length % 2 === 1) {
-        hex = '0' + hex;
-    }
-    return hex;
-}
-
- module.exports = {
+module.exports = {
     isValidAddress: function (address) {
         if (regexp.test(address)) {
             return this.verifyChecksum(address);
         }
 
-         return false;
+        return false;
     },
 
      verifyChecksum: function (address) {
-        // based on https://github.com/stellar/js-stellar-base/blob/master/src/strkey.js#L126
-        var bytes = base32.decode(address);
+        // based on https://github.com/stellar/js-stellar-base/blob/master/src/strkey.js
+        const bytes = base32.decode(address);
         if (bytes[0] !== ed25519PublicKeyVersionByte) {
             return false;
         }
 
-         var computedChecksum = numberToHex(swap16(crc.crc16xmodem(bytes.slice(0, -2))));
-        var checksum = cryptoUtils.toHex(bytes.slice(-2));
-
-         return computedChecksum === checksum
+        const payload = bytes.slice(0, -2);
+        const checksum = cryptoUtils.toHex(bytes.slice(-2));
+        const computedChecksum = cryptoUtils.numberToHex(swap16(crc.crc16xmodem(payload)), 2);
+        return computedChecksum === checksum;
     }
 };
+
 },{"./crypto/utils":145,"base-x":1,"crc":30}],161:[function(require,module,exports){
 const path = require('path')
 const BTCValidator = require('./bitcoin_validator');
