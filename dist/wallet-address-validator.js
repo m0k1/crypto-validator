@@ -14596,6 +14596,10 @@ var CURRENCIES = [
         symbol: 'matic',
         validator: ETHValidator,
     }, {
+        name: 'Avalanche',
+        symbol: 'avax',
+        validator: ETHValidator,
+    }, {
         name: 'MCO',
         symbol: 'mco',
         validator: ETHValidator,
