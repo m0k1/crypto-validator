@@ -9,7 +9,7 @@ Forked from [ryanralph/altcoin-address](https://github.com/ryanralph/altcoin-add
 
 ### NPM
 ```
-npm install trezor-address-validator
+npm i @m0k1/crypto-validator
 ```
 
 ### Browser
