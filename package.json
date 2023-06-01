@@ -1,5 +1,5 @@
 {
-  "name": "@getdelta/wallet-address-validator",
+  "name": "@m0k1/crypto-validator",
   "description": "Wallet address validator for Bitcoin and other Altcoins.",
   "keywords": [
     "ada",
@@ -35,13 +35,13 @@
     "browser",
     "nodejs"
   ],
-  "version": "0.3.25",
-  "author": "Tomek Kolasa <tomek@kolasa.me>",
-  "homepage": "https://github.com/getdelta/wallet-address-validator",
+  "version": "0.4.1",
+  "author": "m0k1",
+  "homepage": "https://github.com/m0k1/cypto-validator",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/getdelta/wallet-address-validator.git"
+    "url": "https://github.com/m0k1/crypto-validator.git"
   },
   "main": "src/wallet_address_validator",
   "engines": {
